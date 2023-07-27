@@ -2,8 +2,10 @@ package com.simplilearn.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -41,18 +43,33 @@ public class ListProductsServlet extends HttpServlet {
 		PrintWriter pw = response.getWriter();
 		pw.println("<html><body>");
 		pw.println("<table>");
-		
+
 		pw.println("<tr>");
 		pw.println("<th>Product ID</th>");
 		pw.println("<th>Product Name</th>");
 		pw.println("<th>Product Price</th>");
 		pw.println("<th>Product Date</th>");
 		pw.println("</tr>");
-		
+
 		try {
 			DBUtils dbUtils = new DBUtils();
 			Connection connection = dbUtils.getConnection();
+			
+			
+			
 			Statement stmt = connection.createStatement();
+			
+//			PreparedStatement preparedStmt = connection.prepareStatement("select * from eproduct where productName = ?");
+//			preparedStmt.setString(1, "HP Laptop");
+			
+//			CallableStatement callableStmt =  connection.prepareCall("call add_product(?, ?, ?)");
+//			callableStmt.setInt(1, 6);
+//			callableStmt.setString(2, "Sample ProductName");
+//			callableStmt.setDouble(3, 15000);
+//			
+//			
+//			callableStmt.executeUpdate();
+			
 			ResultSet rs = stmt.executeQuery("select * from eproduct");
 
 			while (rs.next()) {
@@ -60,21 +77,22 @@ public class ListProductsServlet extends HttpServlet {
 				String productName = rs.getString(2);
 				Double productPrice = rs.getDouble(3);
 				Date productDate = rs.getDate(4);
-				
+
 				pw.println("<tr>");
-				pw.println("<td>"+productId+"</td>");
-				pw.println("<td>"+productName+"</td>");
-				pw.println("<td>"+productPrice+"</td>");
-				pw.println("<td>"+productDate+"</td>");
+				pw.println("<td>" + productId + "</td>");
+				pw.println("<td>" + productName + "</td>");
+				pw.println("<td>" + productPrice + "</td>");
+				pw.println("<td>" + productDate + "</td>");
 				pw.println("</tr>");
 
 			}
 
+			dbUtils.closeConnection();
+
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		pw.println("</body></html>");
 	}
 
