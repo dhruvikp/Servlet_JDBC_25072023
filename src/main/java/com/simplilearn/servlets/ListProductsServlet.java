@@ -30,7 +30,7 @@ public class ListProductsServlet extends HttpServlet {
 	 */
 	public ListProductsServlet() {
 		super();
-		// TODO Auto-generated constructor stub
+		// TODO Auto-generated constructor 
 	}
 
 	/**
